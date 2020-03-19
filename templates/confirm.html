@@ -1,12 +1,13 @@
 {% extends "base.html" %}
-{% block title %}User Registration Confirmed{% endblock %}
+{% block title %} User Registration Confirmed {% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
-{% block content %}
-  <h1>You are confirmed!</h1>
+{% block body %}
+  <h1>Your Registration is Done!</h1>
   <p>
     Name: {{ name }}<br/>
     Email: {{ email }}
   </p>
+  <h1>Thanks for Registration</h1>
 {% endblock %}

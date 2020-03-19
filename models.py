@@ -1,4 +1,4 @@
-from app import db
+db = SQLAlchemy()
 
 class User(db.Model):
 
