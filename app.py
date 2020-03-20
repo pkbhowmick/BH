@@ -3,6 +3,8 @@ import json
 import sys
 import os
 from flask_sqlalchemy import SQLAlchemy
+from wtforms import ValidationError
+
 app = Flask(__name__)
 
 def get_env_variable(name):
@@ -28,6 +30,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation w
 
 db = SQLAlchemy(app)
 
+
+
 class User(db.Model):
 
     __tablename__ = "users"
@@ -44,10 +48,13 @@ class User(db.Model):
         self.contact = contact
         self.institution = institution
         self.designation = designation
-    
+
+
+
 @app.route('/')
 def signup():
         return render_template('signup.html')
+
 
 @app.route('/register', methods=['GET','POST'])
 def register_user():
@@ -57,11 +64,17 @@ def register_user():
     institution = request.args.get('institution')
     designation = request.args.get('designation')
 
-    user = User(name,email,contact,institution,designation)
-    db.session.add(user)
-    db.session.commit()
+    check = User.query.filter_by(email=email).first()
 
-    return render_template('confirm.html',name= name , email= email)
+    if not check:
+        user = User(name,email,contact,institution,designation)
+        db.session.add(user)
+        db.session.commit()
+        return render_template('confirm.html',name= name , email= email)
+    else:
+        return json.dumps({'status': 'Email already taken'})
+
+    
 
 @app.cli.command('resetdb')
 def resetdb_command():
