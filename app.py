@@ -70,10 +70,11 @@ def register_user():
         user = User(name,email,contact,institution,designation)
         db.session.add(user)
         db.session.commit()
+        return render_template('confirm.html',name= name , email= email)
     else:
         return json.dumps({'status': 'Email already taken'})
 
-    return render_template('confirm.html',name= name , email= email)
+    
 
 @app.cli.command('resetdb')
 def resetdb_command():
